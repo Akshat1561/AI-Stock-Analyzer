@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eStockHub | Live Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <div class="header">
+            <h1 id="stockTitle">Loading Data...</h1>
+            <a href="index.html" class="btn-outline">← Back to Search</a>
+        </div>
+
+        <div id="loading">Fetching live market data and training the model...</div>
+
+        <div id="dashboard-content" style="display: none;">
+            <div class="stats-grid">
+                <div class="stat-card"><h3>Live RMSE</h3><p id="rmse">-</p></div>
+                <div class="stat-card"><h3>R² Accuracy</h3><p id="r2">-</p></div>
+                <div class="stat-card"><h3>Last Close</h3><p id="lastPrice">-</p></div>
+                <div class="stat-card highlight"><h3 id="predictionTitle">Predicted Next Day</h3><p id="nextDay">-</p></div>
+            </div>
+
+            <div class="chart-wrapper">
+                <canvas id="stockChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

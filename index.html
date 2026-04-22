@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eStockHub | Predictor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="landing-container">
+        <h1> 📈eStockHub</h1>
+        <p>Advanced Linear Regression Market Predictor</p>
+        
+        <div class="search-box">
+            <div class="autocomplete-wrapper">
+                <input type="text" id="tickerInput" placeholder="Enter Ticker (e.g., AAPL, RELIANCE.NS)" required autocomplete="off">
+                <ul id="suggestionsList" class="suggestions-list"></ul>
+            </div>
+            
+            <select id="timeframeSelect" class="dropdown">
+                <option value="1d">Predict Next Day</option>
+                <option value="1h">Predict Next Hour</option>
+                <option value="1m">Predict Next Minute</option>
+            </select>
+
+            <button class="btn" onclick="goToDashboard()">Analyze Stock Market</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
