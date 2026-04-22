@@ -110,8 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // ... (KEEP your existing fetchModelData function below this exactly as it is) ...
 async function fetchModelData(ticker, timeframe) {
     try {
-        const response = await fetch(`http://127.0.0.1:5000/predict_real_stock?ticker=${ticker}&timeframe=${timeframe}`);
-        const data = await response.json();
+        const response = await fetch(`https://ai-stock-analyzer-ade6.onrender.com/predict_real_stock?ticker=${ticker}&timeframe=${timeframe}`);        const data = await response.json();
 
         if (data.error) {
             document.getElementById('loading').innerText = "Error: " + data.error;
