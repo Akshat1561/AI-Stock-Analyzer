@@ -5,15 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>eStockHub | Live Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
     <div class="dashboard-container">
         <div class="header">
             <h1 id="stockTitle">Loading Data...</h1>
-            <a href="index.html" class="btn-outline">← Back to Search</a>
+            <a href="/" class="btn-outline">← Back to Search</a>
         </div>
 
         <div id="loading">Fetching live market data and training the model...</div>
@@ -23,15 +24,15 @@
                 <div class="stat-card"><h3>Live RMSE</h3><p id="rmse">-</p></div>
                 <div class="stat-card"><h3>R² Accuracy</h3><p id="r2">-</p></div>
                 <div class="stat-card"><h3>Last Close</h3><p id="lastPrice">-</p></div>
-                <div class="stat-card highlight"><h3 id="predictionTitle">Predicted Next Day</h3><p id="nextDay">-</p></div>
+                <div class="stat-card highlight"><h3 id="predictionTitle">Predicted Next Day</h3><p id="nextPrice">-</p></div>
             </div>
 
-            <div class="chart-wrapper">
+            <div class="chart-container">
                 <canvas id="stockChart"></canvas>
             </div>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

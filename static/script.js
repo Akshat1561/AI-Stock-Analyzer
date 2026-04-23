@@ -29,7 +29,7 @@ function goToDashboard() {
         const ticker = tickerInput.value.trim();
         const timeframe = timeframeSelect.value;
         if (ticker) {
-            window.location.href = `dashboard.html?ticker=${ticker}&timeframe=${timeframe}`;
+            window.location.href = `/dashboard?ticker=${ticker}&timeframe=${timeframe}`;
         } else {
             alert("Please enter a stock ticker.");
         }
@@ -45,30 +45,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const suggestionsList = document.getElementById('suggestionsList');
 
     if (tickerInput && suggestionsList) {
-        // Listen to every keystroke
         tickerInput.addEventListener('input', function() {
             const query = this.value.toLowerCase().trim();
-            suggestionsList.innerHTML = ''; // Clear previous suggestions
+            suggestionsList.innerHTML = ''; 
             
             if (query === '') {
                 suggestionsList.style.display = 'none';
                 return;
             }
 
-            // Find matching stocks by Symbol OR Company Name
             const filtered = popularStocks.filter(stock => 
                 stock.symbol.toLowerCase().includes(query) || 
                 stock.name.toLowerCase().includes(query)
             );
 
-            // Populate the dropdown
             if (filtered.length > 0) {
                 suggestionsList.style.display = 'block';
                 filtered.forEach(stock => {
                     const li = document.createElement('li');
                     li.innerHTML = `<span class="ticker-symbol">${stock.symbol}</span> <span class="ticker-name">${stock.name}</span>`;
                     
-                    // When user clicks a recommendation, auto-fill the input
                     li.addEventListener('click', () => {
                         tickerInput.value = stock.symbol;
                         suggestionsList.style.display = 'none';
@@ -81,7 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Hide dropdown if user clicks somewhere else on the page
         document.addEventListener('click', function(e) {
             if (e.target !== tickerInput && e.target !== suggestionsList) {
                 suggestionsList.style.display = 'none';
@@ -90,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 📈 DASHBOARD LOGIC (Dashboard Page)
+    // 📊 DASHBOARD LOGIC (Dashboard Page)
     // ==========================================
     const stockChartCanvas = document.getElementById('stockChart');
     if (stockChartCanvas) {
@@ -107,10 +102,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// ... (KEEP your existing fetchModelData function below this exactly as it is) ...
 async function fetchModelData(ticker, timeframe) {
     try {
-        const response = await fetch(`https://ai-stock-analyzer-ade6.onrender.com/predict_real_stock?ticker=${ticker}&timeframe=${timeframe}`);        const data = await response.json();
+        // Updated for Flask! We only need the relative path now.
+        const response = await fetch(`/predict_real_stock?ticker=${ticker}&timeframe=${timeframe}`);
+        const data = await response.json();
 
         if (data.error) {
             document.getElementById('loading').innerText = "Error: " + data.error;
@@ -121,14 +117,15 @@ async function fetchModelData(ticker, timeframe) {
         document.getElementById('loading').style.display = 'none';
         document.getElementById('dashboard-content').style.display = 'block';
 
-        document.getElementById('rmse').innerText = data.rmse;
-        document.getElementById('r2').innerText = data.r2;
-        document.getElementById('lastPrice').innerText = data.currency_symbol + data.last_price;
+        document.getElementById('rmse').innerText = data.rmse || "N/A";
+        document.getElementById('r2').innerText = data.r2 || "N/A";
+        document.getElementById('lastPrice').innerText = data.currency_symbol + data.current_price;
         
-        const nextDayElement = document.getElementById('nextDay');
-        const diff = data.prediction - data.last_price;
+        // Fixed ID from nextDay to nextPrice to match your HTML
+        const nextDayElement = document.getElementById('nextPrice');
+        const diff = data.predicted_price - data.current_price;
         
-        nextDayElement.innerText = data.currency_symbol + data.prediction;
+        nextDayElement.innerText = data.currency_symbol + data.predicted_price;
         if (diff > 0) {
             nextDayElement.style.color = "#16a34a"; 
             nextDayElement.innerText += " ▲";
@@ -137,13 +134,14 @@ async function fetchModelData(ticker, timeframe) {
             nextDayElement.innerText += " ▼";
         }
 
-        const graphLabels = data.dates;
-        const actualPrices = data.actual;
-        const predictedPrices = data.predicted;
-
-        graphLabels.push(data.next_date + " (FUTURE)"); 
+        const graphLabels = data.labels;
+        const actualPrices = data.history;
+        const predictedPrices = [...data.history]; // Copy array
+        
+        // Setup prediction points for the chart
+        graphLabels.push("FUTURE"); 
         actualPrices.push(null); 
-        predictedPrices.push(data.prediction); 
+        predictedPrices.push(data.predicted_price); 
 
         const ctx = document.getElementById('stockChart').getContext('2d');
         const gradientBlue = ctx.createLinearGradient(0, 0, 0, 400);
@@ -186,26 +184,17 @@ async function fetchModelData(ticker, timeframe) {
                 maintainAspectRatio: false,
                 interaction: { mode: 'index', intersect: false },
                 plugins: {
-                    legend: { position: 'top', labels: { usePointStyle: true, font: { family: "'Inter', sans-serif", size: 13 } } },
+                    legend: { position: 'top' },
                     tooltip: {
                         backgroundColor: 'rgba(15, 23, 42, 0.9)', 
-                        titleFont: { size: 13, family: "'Inter', sans-serif" },
-                        bodyFont: { size: 14, family: "'Inter', sans-serif", weight: 'bold' },
-                        padding: 12, cornerRadius: 8,
-                        callbacks: {
-                            label: function(context) {
-                                if (context.parsed.y === null) return null; 
-                                return ` ${context.dataset.label}: ${data.currency_symbol}${context.parsed.y.toFixed(2)}`;
-                            }
-                        }
+                        padding: 12, cornerRadius: 8
                     }
                 },
                 scales: {
-                    x: { grid: { display: false }, ticks: { maxTicksLimit: 8, font: { family: "'Inter', sans-serif" } } },
+                    x: { grid: { display: false }, ticks: { maxTicksLimit: 8 } },
                     y: {
                         grid: { color: '#f1f5f9', drawBorder: false }, 
                         ticks: { 
-                            font: { family: "'Inter', sans-serif" },
                             callback: function(value) { return data.currency_symbol + value; }
                         }
                     }

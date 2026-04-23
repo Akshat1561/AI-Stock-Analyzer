@@ -101,8 +101,8 @@ body {
     z-index: 1000;
     list-style: none;
     padding: 0;
-    margin: -10px 0 16px 0; /* Align perfectly under input */
-    display: none; /* Hidden by default */
+    margin: -10px 0 16px 0; 
+    display: none; 
     text-align: left;
 }
 
@@ -121,7 +121,7 @@ body {
 }
 
 .suggestions-list li:hover {
-    background: rgba(37, 99, 235, 0.08); /* Soft blue hover */
+    background: rgba(37, 99, 235, 0.08); 
 }
 
 .ticker-symbol {
