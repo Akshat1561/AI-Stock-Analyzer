@@ -1,7 +1,8 @@
 let myStockChart = null;
 
-// 📚 Built-in Database of Popular Stocks (US & India)
+// 📈 Built-in Database of Popular Stocks (US & India)
 const popularStocks = [
+    // === US STOCKS (Global Giants) ===
     { symbol: 'AAPL', name: 'Apple Inc.' },
     { symbol: 'MSFT', name: 'Microsoft Corp.' },
     { symbol: 'GOOGL', name: 'Alphabet (Google)' },
@@ -9,16 +10,56 @@ const popularStocks = [
     { symbol: 'TSLA', name: 'Tesla Inc.' },
     { symbol: 'NVDA', name: 'NVIDIA Corp.' },
     { symbol: 'META', name: 'Meta Platforms' },
+    { symbol: 'NFLX', name: 'Netflix Inc.' },
+    { symbol: 'AMD', name: 'Advanced Micro Devices' },
+    { symbol: 'INTC', name: 'Intel Corporation' },
+    { symbol: 'CRM', name: 'Salesforce Inc.' },
+    { symbol: 'UBER', name: 'Uber Technologies' },
+    { symbol: 'JPM', name: 'JPMorgan Chase' },
+    { symbol: 'V', name: 'Visa Inc.' },
+    { symbol: 'MA', name: 'Mastercard Inc.' },
+    { symbol: 'BAC', name: 'Bank of America' },
+    { symbol: 'PYPL', name: 'PayPal Holdings' },
+    { symbol: 'WMT', name: 'Walmart Inc.' },
+    { symbol: 'JNJ', name: 'Johnson & Johnson' },
+    { symbol: 'KO', name: 'Coca-Cola Company' },
+    { symbol: 'PEP', name: 'PepsiCo Inc.' },
+    { symbol: 'MCD', name: 'McDonald\'s Corp.' },
+    { symbol: 'DIS', name: 'Walt Disney Co.' },
+    { symbol: 'NKE', name: 'Nike Inc.' },
+    { symbol: 'SBUX', name: 'Starbucks Corp.' },
+    { symbol: 'COST', name: 'Costco Wholesale' },
+
+    // === INDIAN STOCKS (Nifty 50 & Popular) ===
     { symbol: 'RELIANCE.NS', name: 'Reliance Industries' },
-    { symbol: 'TCS.NS', name: 'Tata Consultancy' },
+    { symbol: 'TCS.NS', name: 'Tata Consultancy Services' },
     { symbol: 'HDFCBANK.NS', name: 'HDFC Bank' },
+    { symbol: 'ICICIBANK.NS', name: 'ICICI Bank' },
     { symbol: 'INFY.NS', name: 'Infosys Limited' },
     { symbol: 'SBIN.NS', name: 'State Bank of India' },
     { symbol: 'TATAMOTORS.NS', name: 'Tata Motors' },
     { symbol: 'ITC.NS', name: 'ITC Limited' },
-    { symbol: 'ICICIBANK.NS', name: 'ICICI Bank' },
-    { symbol: 'WMT', name: 'Walmart Inc.' },
-    { symbol: 'JPM', name: 'JPMorgan Chase' }
+    { symbol: 'WIPRO.NS', name: 'Wipro Limited' },
+    { symbol: 'HCLTECH.NS', name: 'HCL Technologies' },
+    { symbol: 'TECHM.NS', name: 'Tech Mahindra' },
+    { symbol: 'KOTAKBANK.NS', name: 'Kotak Mahindra Bank' },
+    { symbol: 'AXISBANK.NS', name: 'Axis Bank' },
+    { symbol: 'BAJFINANCE.NS', name: 'Bajaj Finance' },
+    { symbol: 'HINDUNILVR.NS', name: 'Hindustan Unilever' },
+    { symbol: 'MARUTI.NS', name: 'Maruti Suzuki' },
+    { symbol: 'M&M.NS', name: 'Mahindra & Mahindra' },
+    { symbol: 'TITAN.NS', name: 'Titan Company' },
+    { symbol: 'ASIANPAINT.NS', name: 'Asian Paints' },
+    { symbol: 'LT.NS', name: 'Larsen & Toubro' },
+    { symbol: 'TATASTEEL.NS', name: 'Tata Steel' },
+    { symbol: 'SUNPHARMA.NS', name: 'Sun Pharmaceutical' },
+    { symbol: 'NTPC.NS', name: 'NTPC Limited' },
+    { symbol: 'ONGC.NS', name: 'ONGC' },
+    { symbol: 'POWERGRID.NS', name: 'Power Grid Corp' },
+    { symbol: 'ADANIENT.NS', name: 'Adani Enterprises' },
+    { symbol: 'BHARTIARTL.NS', name: 'Bharti Airtel' },
+    { symbol: 'ZOMATO.NS', name: 'Zomato Limited' },
+    { symbol: 'PAYTM.NS', name: 'Paytm (One97)' }
 ];
 
 function goToDashboard() {
