@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>eStockHub - AI Dashboard</title>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+
     <link rel="stylesheet" href="/static/style.css">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 </head>
 
 <body class="dash-body">
@@ -24,13 +27,11 @@
     <div class="container">
 
         <div class="search-box-glass">
-            
+
             <div class="input-wrapper">
-                <input type="text" 
-                       id="tickerInput" 
-                       placeholder="Search Symbol (e.g. AAPL, TSLA, RELIANCE.NS)" 
-                       autocomplete="off">
-                
+                <input type="text" id="tickerInput" placeholder="Search Symbol (e.g. AAPL, TSLA, RELIANCE.NS)"
+                    autocomplete="off">
+
                 <div id="suggestionsBox" class="suggestions-box"></div>
             </div>
 
@@ -76,10 +77,10 @@
                 <p id="rsiValue">---</p>
             </div>
 
-            <!-- <div class="stat-card">
+            <div class="stat-card">
                 <h3>Stochastic</h3>
                 <p id="stochValue">---</p>
-            </div> -->
+            </div>
 
             <div class="stat-card">
                 <h3>Live VWAP</h3>
@@ -96,4 +97,5 @@
     <script src="/static/script.js"></script>
 
 </body>
+
 </html>
