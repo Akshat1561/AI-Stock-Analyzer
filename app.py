@@ -15,7 +15,6 @@ CORS(app)
 
 @app.route('/')
 def home():
-    # Ab index.html aapka main dashboard hoga
     return render_template('index.html')
 
 @app.route('/dashboard')
@@ -76,7 +75,6 @@ def predict_real_stock():
         scaler_path = f"saved_models/{ticker}_scaler.pkl"
         
         if os.path.exists(model_path) and os.path.exists(scaler_path):
-            # ⚡ SUPER FAST MODE (Loads in 1 second)
             print(f"Loading pre-trained model for {ticker}...")
             model = load_model(model_path)
             scaler = joblib.load(scaler_path)
@@ -89,7 +87,7 @@ def predict_real_stock():
             
             rmse, r2 = 0.0150, 0.9850 
         else:
-            # ⏳ LIVE TRAIN FALLBACK
+            #  LIVE TRAIN FALLBACK
             print(f"No pre-trained model for {ticker}. Training LIVE...")
             scaler = MinMaxScaler(feature_range=(0, 1))
             scaled_data = scaler.fit_transform(dataset)

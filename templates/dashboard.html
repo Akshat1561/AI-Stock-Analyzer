@@ -3,52 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>eStockHub - Pro Dashboard</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="/static/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-</head>
-<body class="dash-body">
+    <title>eStockHub - AI Dashboard</title>
     
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <link rel="stylesheet" href="/static/style.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="dash-body">
+
     <nav class="dash-nav">
-        <h2 class="logo-small"><a href="/" style="text-decoration: none; color: white;">eStock<span>Hub</span></a></h2>
-        <span class="badge">Live AI Engine Active</span>
+        <h2 class="logo-small">
+            <a href="/" style="color: white;">eStock<span>Hub</span></a>
+        </h2>
+        <span class="badge">Live Market Mode</span>
     </nav>
 
     <div class="container">
+
         <div class="search-box-glass">
-            <div style="flex: 1; position: relative;">
-                <input type="text" id="tickerInput" placeholder="Enter stock symbol (e.g., AAPL, RELIANCE.NS)..." autocomplete="off" style="width: 100%;">
+            
+            <div class="input-wrapper">
+                <input type="text" 
+                       id="tickerInput" 
+                       placeholder="Search Symbol (e.g. AAPL, TSLA, RELIANCE.NS)" 
+                       autocomplete="off">
+                
                 <div id="suggestionsBox" class="suggestions-box"></div>
             </div>
+
             <select id="timeframeSelect">
                 <option value="1d">1 Day Data</option>
                 <option value="1h">1 Hour Data</option>
                 <option value="1m">1 Min Data</option>
             </select>
-            <button onclick="analyzeStock()" class="analyze-btn">Deep Analyze</button>
+
+            <button onclick="analyzeStock()" class="analyze-btn">
+                Deep Analyze
+            </button>
         </div>
 
         <div id="loading">
             <div class="spinner"></div>
-            <p>LSTM Neural Network is calculating... ⏳</p>
+            <p>Scanning Market Trends... ⏳</p>
         </div>
 
         <div class="stats-grid">
-            <div class="stat-card"><h3>Live RMSE</h3><p id="rmse">0.00</p></div>
-            <div class="stat-card"><h3>R² Accuracy</h3><p id="r2">0.00</p></div>
-            <div class="stat-card"><h3>Last Close</h3><p id="lastPrice">---</p></div>
-            <div class="stat-card highlight"><h3>Next Predicted</h3><p id="predictedPrice" class="glow-text">---</p></div>
-            <div class="stat-card"><h3>RSI (14)</h3><p id="rsiValue">---</p></div>
-            <div class="stat-card"><h3>Stochastic</h3><p id="stochValue">---</p></div>
-            <div class="stat-card"><h3>Live VWAP</h3><p id="vwapValue">---</p></div>
+            <div class="stat-card">
+                <h3>Live RMSE</h3>
+                <p id="rmse">0.00</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>R² Accuracy</h3>
+                <p id="r2">0.00</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>Last Close</h3>
+                <p id="lastPrice">---</p>
+            </div>
+
+            <div class="stat-card highlight">
+                <h3>Next Predicted</h3>
+                <p id="predictedPrice" class="glow-text">---</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>RSI (14)</h3>
+                <p id="rsiValue">---</p>
+            </div>
+
+            <!-- <div class="stat-card">
+                <h3>Stochastic</h3>
+                <p id="stochValue">---</p>
+            </div> -->
+
+            <div class="stat-card">
+                <h3>Live VWAP</h3>
+                <p id="vwapValue">---</p>
+            </div>
         </div>
 
-        <div class="chart-container glass-panel" style="position: relative; height: 450px; width: 100%;">
-    <canvas id="stockChart"></canvas>
-</div>
+        <div class="chart-container">
+            <canvas id="myFinancialChart"></canvas>
+        </div>
+
     </div>
 
     <script src="/static/script.js"></script>
+
 </body>
 </html>

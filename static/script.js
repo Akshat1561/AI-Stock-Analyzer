@@ -5,44 +5,66 @@ document.addEventListener('DOMContentLoaded', function() {
     const suggestionsBox = document.getElementById('suggestionsBox');
     const loadingDiv = document.getElementById('loading');
 
-    // === 30 STOCKS FOR AUTOCOMPLETE ===
     const popularStocks = [
-        { symbol: 'AAPL', name: 'Apple Inc.' }, 
-        { symbol: 'MSFT', name: 'Microsoft Corp.' },
-        { symbol: 'GOOGL', name: 'Alphabet (Google)' }, 
-        { symbol: 'AMZN', name: 'Amazon.com Inc.' },
-        { symbol: 'TSLA', name: 'Tesla Inc.' }, 
-        { symbol: 'NVDA', name: 'NVIDIA Corp.' },
-        { symbol: 'META', name: 'Meta Platforms' }, 
-        { symbol: 'NFLX', name: 'Netflix Inc.' },
-        { symbol: 'AMD', name: 'Advanced Micro Devices' },
-         { symbol: 'INTC', name: 'Intel Corporation' },
-        { symbol: 'JPM', name: 'JPMorgan Chase' },
-        { symbol: 'V', name: 'Visa Inc.' },
-        { symbol: 'WMT', name: 'Walmart Inc.' },
-        { symbol: 'KO', name: 'Coca-Cola' },
-        { symbol: 'DIS', name: 'Walt Disney' },
-        { symbol: 'RELIANCE.NS', name: 'Reliance Industries' },
-        { symbol: 'TCS.NS', name: 'Tata Consultancy Services' },
-        { symbol: 'HDFCBANK.NS', name: 'HDFC Bank' },
-        { symbol: 'ICICIBANK.NS', name: 'ICICI Bank' },
-        { symbol: 'INFY.NS', name: 'Infosys Limited' },
-        { symbol: 'SBIN.NS', name: 'State Bank of India' },
-        { symbol: 'TATAMOTORS.NS', name: 'Tata Motors' },
-        { symbol: 'ITC.NS', name: 'ITC Limited' },
-        { symbol: 'WIPRO.NS', name: 'Wipro Limited' },
-        { symbol: 'LT.NS', name: 'Larsen & Toubro' },
-        { symbol: 'TATASTEEL.NS', name: 'Tata Steel' },
-        { symbol: 'SUNPHARMA.NS', name: 'Sun Pharma' },
-        { symbol: 'BAJFINANCE.NS', name: 'Bajaj Finance' },
-        { symbol: 'MARUTI.NS', name: 'Maruti Suzuki' },
-        { symbol: 'ZOMATO.NS', name: 'Zomato Limited' }
-    ];
+    // === US STOCKS ===
+    { symbol: 'AAPL', name: 'Apple Inc.' },
+    { symbol: 'MSFT', name: 'Microsoft Corp.' },
+    { symbol: 'GOOGL', name: 'Alphabet (Google)' },
+    { symbol: 'AMZN', name: 'Amazon.com Inc.' },
+    { symbol: 'TSLA', name: 'Tesla Inc.' },
+    { symbol: 'NVDA', name: 'NVIDIA Corp.' },
+    { symbol: 'META', name: 'Meta Platforms' },
+    { symbol: 'NFLX', name: 'Netflix Inc.' },
+    { symbol: 'AMD', name: 'Advanced Micro Devices' },
+    { symbol: 'INTC', name: 'Intel Corporation' },
+    { symbol: 'JPM', name: 'JPMorgan Chase' },
+    { symbol: 'V', name: 'Visa Inc.' },
+    { symbol: 'WMT', name: 'Walmart Inc.' },
+    { symbol: 'KO', name: 'Coca-Cola' },
+    { symbol: 'DIS', name: 'Walt Disney' },
+    { symbol: 'PEP', name: 'PepsiCo Inc.' },
+    { symbol: 'COST', name: 'Costco Wholesale' },
+    { symbol: 'MCD', name: 'McDonald’s Corp.' },
+    { symbol: 'NKE', name: 'Nike Inc.' },
+    { symbol: 'CRM', name: 'Salesforce Inc.' },
+    { symbol: 'UBER', name: 'Uber Technologies' },
+    { symbol: 'PYPL', name: 'PayPal Holdings' },
+    { symbol: 'BA', name: 'Boeing Co.' },
+    { symbol: 'IBM', name: 'IBM Corporation' },
+    { symbol: 'SBUX', name: 'Starbucks Corp.' },
+
+    // === INDIAN STOCKS ===
+    { symbol: 'RELIANCE.NS', name: 'Reliance Industries' },
+    { symbol: 'TCS.NS', name: 'Tata Consultancy Services' },
+    { symbol: 'HDFCBANK.NS', name: 'HDFC Bank' },
+    { symbol: 'ICICIBANK.NS', name: 'ICICI Bank' },
+    { symbol: 'INFY.NS', name: 'Infosys Limited' },
+    { symbol: 'SBIN.NS', name: 'State Bank of India' },
+    { symbol: 'TATAMOTORS.NS', name: 'Tata Motors' },
+    { symbol: 'ITC.NS', name: 'ITC Limited' },
+    { symbol: 'WIPRO.NS', name: 'Wipro Limited' },
+    { symbol: 'LT.NS', name: 'Larsen & Toubro' },
+    { symbol: 'TATASTEEL.NS', name: 'Tata Steel' },
+    { symbol: 'SUNPHARMA.NS', name: 'Sun Pharma' },
+    { symbol: 'BAJFINANCE.NS', name: 'Bajaj Finance' },
+    { symbol: 'MARUTI.NS', name: 'Maruti Suzuki' },
+    { symbol: 'ZOMATO.NS', name: 'Zomato Limited' },
+    { symbol: 'HINDUNILVR.NS', name: 'Hindustan Unilever' },
+    { symbol: 'KOTAKBANK.NS', name: 'Kotak Mahindra Bank' },
+    { symbol: 'AXISBANK.NS', name: 'Axis Bank' },
+    { symbol: 'ASIANPAINT.NS', name: 'Asian Paints' },
+    { symbol: 'M&M.NS', name: 'Mahindra & Mahindra' },
+    { symbol: 'TITAN.NS', name: 'Titan Company' },
+    { symbol: 'NTPC.NS', name: 'NTPC Limited' },
+    { symbol: 'ULTRACEMCO.NS', name: 'UltraTech Cement' },
+    { symbol: 'POWERGRID.NS', name: 'Power Grid Corporation' },
+    { symbol: 'BHEL.NS', name: 'Bharat Heavy Electricals' }
+];
 
 
     
 
-    // === AUTOCOMPLETE ENGINE ===
+    // === AUTOCOMPLETE CODE ===
     if (tickerInput && suggestionsBox) {
         tickerInput.addEventListener('input', function() {
             const query = this.value.toLowerCase().trim();
@@ -83,7 +105,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // === COLORFUL CHART RENDERER ===
    // === VIBRANT "MOUNTAIN STYLE" CHART RENDERER ===
     function drawColorfulChart(data) {
         const canvas = document.getElementById('stockChart');
@@ -95,20 +116,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const chartAreaHeight = canvas.height || 400;
         
-        // ⛰️ 1. Mountain Fill Gradient (Teal to Transparent)
+        //  1. Mountain Fill Gradient (Teal to Transparent)
         const mountainGradient = ctx.createLinearGradient(0, 0, 0, chartAreaHeight);
         mountainGradient.addColorStop(0, 'rgba(0, 229, 192, 0.4)'); // Teal Transparent
         mountainGradient.addColorStop(1, 'rgba(0, 229, 192, 0)');   // Fully Transparent
 
-        // 🤖 AI Prediction Line Gradient
+        //  AI Prediction Line Gradient
         const aiLineGradient = ctx.createLinearGradient(0, 0, canvas.width || 800, 0);
         aiLineGradient.addColorStop(0, '#ff9f43'); // Orange
         aiLineGradient.addColorStop(1, '#ff4757'); // Red
 
-        // Last close price nikalna (Red line ke liye)
+        // Last close price
         const lastActualPrice = data.history_close[data.history_close.length - 1];
 
-        // 🔴 2. Custom Plugin: Red Dashed Current Price Line
+        //  2. Custom Plugin: Red Dashed Current Price Line
         const currentPriceLinePlugin = {
             id: 'currentPriceLine',
             beforeDraw: (chart) => {
@@ -120,8 +141,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 ctx.moveTo(left, yPos);
                 ctx.lineTo(right, yPos);
                 ctx.lineWidth = 1;
-                ctx.strokeStyle = '#ff4757'; // Red color
-                ctx.setLineDash([4, 4]); // Dashed effect
+                ctx.strokeStyle = '#ff4757';
+                ctx.setLineDash([4, 4]);
                 ctx.stroke();
                 ctx.restore();
             }
@@ -135,11 +156,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     {
                         label: 'Actual Price (Mountain)',
                         data: data.history_close,
-                        borderColor: '#00e5c0', // Bright Teal color (same as your image)
+                        borderColor: '#00e5c0',
                         backgroundColor: mountainGradient,
                         borderWidth: 2,
                         pointRadius: 0,
-                        tension: 0.1, // Slight curves for natural mountain look
+                        tension: 0.1,
                         fill: true
                     },
                     {
@@ -174,16 +195,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 scales: {
                     x: { 
                         ticks: { color: '#888', maxTicksLimit: 10 }, 
-                        grid: { display: false } // Vertical lines hata di (clean look ke liye)
+                        grid: { display: false }
                     },
                     y: { 
-                        position: 'right', // 3. Prices on the Right Side!
+                        position: 'right',
                         ticks: { color: '#888' }, 
                         grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false } 
                     }
                 }
             },
-            plugins: [currentPriceLinePlugin] // Add the red line plugin
+            plugins: [currentPriceLinePlugin]
         });
     }
 
