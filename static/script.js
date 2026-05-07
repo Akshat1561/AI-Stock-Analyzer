@@ -1,250 +1,227 @@
-let myStockChart = null;
+document.addEventListener('DOMContentLoaded', function() {
 
-// 📈 Built-in Database of Popular Stocks (US & India)
-const popularStocks = [
-    // === US STOCKS (Global Giants) ===
-    { symbol: 'AAPL', name: 'Apple Inc.' },
-    { symbol: 'MSFT', name: 'Microsoft Corp.' },
-    { symbol: 'GOOGL', name: 'Alphabet (Google)' },
-    { symbol: 'AMZN', name: 'Amazon.com Inc.' },
-    { symbol: 'TSLA', name: 'Tesla Inc.' },
-    { symbol: 'NVDA', name: 'NVIDIA Corp.' },
-    { symbol: 'META', name: 'Meta Platforms' },
-    { symbol: 'NFLX', name: 'Netflix Inc.' },
-    { symbol: 'AMD', name: 'Advanced Micro Devices' },
-    { symbol: 'INTC', name: 'Intel Corporation' },
-    { symbol: 'CRM', name: 'Salesforce Inc.' },
-    { symbol: 'UBER', name: 'Uber Technologies' },
-    { symbol: 'JPM', name: 'JPMorgan Chase' },
-    { symbol: 'V', name: 'Visa Inc.' },
-    { symbol: 'MA', name: 'Mastercard Inc.' },
-    { symbol: 'BAC', name: 'Bank of America' },
-    { symbol: 'PYPL', name: 'PayPal Holdings' },
-    { symbol: 'WMT', name: 'Walmart Inc.' },
-    { symbol: 'JNJ', name: 'Johnson & Johnson' },
-    { symbol: 'KO', name: 'Coca-Cola Company' },
-    { symbol: 'PEP', name: 'PepsiCo Inc.' },
-    { symbol: 'MCD', name: 'McDonald\'s Corp.' },
-    { symbol: 'DIS', name: 'Walt Disney Co.' },
-    { symbol: 'NKE', name: 'Nike Inc.' },
-    { symbol: 'SBUX', name: 'Starbucks Corp.' },
-    { symbol: 'COST', name: 'Costco Wholesale' },
-
-    // === INDIAN STOCKS (Nifty 50 & Popular) ===
-    { symbol: 'RELIANCE.NS', name: 'Reliance Industries' },
-    { symbol: 'TCS.NS', name: 'Tata Consultancy Services' },
-    { symbol: 'HDFCBANK.NS', name: 'HDFC Bank' },
-    { symbol: 'ICICIBANK.NS', name: 'ICICI Bank' },
-    { symbol: 'INFY.NS', name: 'Infosys Limited' },
-    { symbol: 'SBIN.NS', name: 'State Bank of India' },
-    { symbol: 'TATAMOTORS.NS', name: 'Tata Motors' },
-    { symbol: 'ITC.NS', name: 'ITC Limited' },
-    { symbol: 'WIPRO.NS', name: 'Wipro Limited' },
-    { symbol: 'HCLTECH.NS', name: 'HCL Technologies' },
-    { symbol: 'TECHM.NS', name: 'Tech Mahindra' },
-    { symbol: 'KOTAKBANK.NS', name: 'Kotak Mahindra Bank' },
-    { symbol: 'AXISBANK.NS', name: 'Axis Bank' },
-    { symbol: 'BAJFINANCE.NS', name: 'Bajaj Finance' },
-    { symbol: 'HINDUNILVR.NS', name: 'Hindustan Unilever' },
-    { symbol: 'MARUTI.NS', name: 'Maruti Suzuki' },
-    { symbol: 'M&M.NS', name: 'Mahindra & Mahindra' },
-    { symbol: 'TITAN.NS', name: 'Titan Company' },
-    { symbol: 'ASIANPAINT.NS', name: 'Asian Paints' },
-    { symbol: 'LT.NS', name: 'Larsen & Toubro' },
-    { symbol: 'TATASTEEL.NS', name: 'Tata Steel' },
-    { symbol: 'SUNPHARMA.NS', name: 'Sun Pharmaceutical' },
-    { symbol: 'NTPC.NS', name: 'NTPC Limited' },
-    { symbol: 'ONGC.NS', name: 'ONGC' },
-    { symbol: 'POWERGRID.NS', name: 'Power Grid Corp' },
-    { symbol: 'ADANIENT.NS', name: 'Adani Enterprises' },
-    { symbol: 'BHARTIARTL.NS', name: 'Bharti Airtel' },
-    { symbol: 'ZOMATO.NS', name: 'Zomato Limited' },
-    { symbol: 'PAYTM.NS', name: 'Paytm (One97)' }
-];
-
-function goToDashboard() {
+    let stockChart = null;
     const tickerInput = document.getElementById('tickerInput');
-    const timeframeSelect = document.getElementById('timeframeSelect');
+    const suggestionsBox = document.getElementById('suggestionsBox');
+    const loadingDiv = document.getElementById('loading');
 
-    if (tickerInput && timeframeSelect) {
-        const ticker = tickerInput.value.trim();
-        const timeframe = timeframeSelect.value;
-        if (ticker) {
-            window.location.href = `/dashboard?ticker=${ticker}&timeframe=${timeframe}`;
-        } else {
-            alert("Please enter a stock ticker.");
-        }
-    }
-}
+    // === 30 STOCKS FOR AUTOCOMPLETE ===
+    const popularStocks = [
+        { symbol: 'AAPL', name: 'Apple Inc.' }, 
+        { symbol: 'MSFT', name: 'Microsoft Corp.' },
+        { symbol: 'GOOGL', name: 'Alphabet (Google)' }, 
+        { symbol: 'AMZN', name: 'Amazon.com Inc.' },
+        { symbol: 'TSLA', name: 'Tesla Inc.' }, 
+        { symbol: 'NVDA', name: 'NVIDIA Corp.' },
+        { symbol: 'META', name: 'Meta Platforms' }, 
+        { symbol: 'NFLX', name: 'Netflix Inc.' },
+        { symbol: 'AMD', name: 'Advanced Micro Devices' },
+         { symbol: 'INTC', name: 'Intel Corporation' },
+        { symbol: 'JPM', name: 'JPMorgan Chase' },
+        { symbol: 'V', name: 'Visa Inc.' },
+        { symbol: 'WMT', name: 'Walmart Inc.' },
+        { symbol: 'KO', name: 'Coca-Cola' },
+        { symbol: 'DIS', name: 'Walt Disney' },
+        { symbol: 'RELIANCE.NS', name: 'Reliance Industries' },
+        { symbol: 'TCS.NS', name: 'Tata Consultancy Services' },
+        { symbol: 'HDFCBANK.NS', name: 'HDFC Bank' },
+        { symbol: 'ICICIBANK.NS', name: 'ICICI Bank' },
+        { symbol: 'INFY.NS', name: 'Infosys Limited' },
+        { symbol: 'SBIN.NS', name: 'State Bank of India' },
+        { symbol: 'TATAMOTORS.NS', name: 'Tata Motors' },
+        { symbol: 'ITC.NS', name: 'ITC Limited' },
+        { symbol: 'WIPRO.NS', name: 'Wipro Limited' },
+        { symbol: 'LT.NS', name: 'Larsen & Toubro' },
+        { symbol: 'TATASTEEL.NS', name: 'Tata Steel' },
+        { symbol: 'SUNPHARMA.NS', name: 'Sun Pharma' },
+        { symbol: 'BAJFINANCE.NS', name: 'Bajaj Finance' },
+        { symbol: 'MARUTI.NS', name: 'Maruti Suzuki' },
+        { symbol: 'ZOMATO.NS', name: 'Zomato Limited' }
+    ];
 
-document.addEventListener('DOMContentLoaded', () => {
+
     
-    // ==========================================
-    // 🔍 AUTOCOMPLETE LOGIC (Landing Page)
-    // ==========================================
-    const tickerInput = document.getElementById('tickerInput');
-    const suggestionsList = document.getElementById('suggestionsList');
 
-    if (tickerInput && suggestionsList) {
+    // === AUTOCOMPLETE ENGINE ===
+    if (tickerInput && suggestionsBox) {
         tickerInput.addEventListener('input', function() {
             const query = this.value.toLowerCase().trim();
-            suggestionsList.innerHTML = ''; 
+            suggestionsBox.innerHTML = '';
             
-            if (query === '') {
-                suggestionsList.style.display = 'none';
+            if (!query) {
+                suggestionsBox.style.display = 'none';
                 return;
             }
 
-            const filtered = popularStocks.filter(stock => 
+            const matches = popularStocks.filter(stock => 
                 stock.symbol.toLowerCase().includes(query) || 
                 stock.name.toLowerCase().includes(query)
             );
 
-            if (filtered.length > 0) {
-                suggestionsList.style.display = 'block';
-                filtered.forEach(stock => {
-                    const li = document.createElement('li');
-                    li.innerHTML = `<span class="ticker-symbol">${stock.symbol}</span> <span class="ticker-name">${stock.name}</span>`;
+            if (matches.length > 0) {
+                suggestionsBox.style.display = 'block';
+                matches.forEach(match => {
+                    const div = document.createElement('div');
+                    div.className = 'suggestion-item';
+                    div.innerHTML = `<span class="sugg-sym">${match.symbol}</span> <span class="sugg-name">${match.name}</span>`;
                     
-                    li.addEventListener('click', () => {
-                        tickerInput.value = stock.symbol;
-                        suggestionsList.style.display = 'none';
-                    });
-                    
-                    suggestionsList.appendChild(li);
+                    div.onclick = function() {
+                        tickerInput.value = match.symbol;
+                        suggestionsBox.style.display = 'none';
+                    };
+                    suggestionsBox.appendChild(div);
                 });
             } else {
-                suggestionsList.style.display = 'none';
+                suggestionsBox.style.display = 'none';
             }
         });
 
         document.addEventListener('click', function(e) {
-            if (e.target !== tickerInput && e.target !== suggestionsList) {
-                suggestionsList.style.display = 'none';
+            if (e.target !== tickerInput && e.target !== suggestionsBox) {
+                suggestionsBox.style.display = 'none';
             }
         });
     }
 
-    // ==========================================
-    // 📊 DASHBOARD LOGIC (Dashboard Page)
-    // ==========================================
-    const stockChartCanvas = document.getElementById('stockChart');
-    if (stockChartCanvas) {
-        const urlParams = new URLSearchParams(window.location.search);
-        const ticker = urlParams.get('ticker') || 'AAPL';
-        const timeframe = urlParams.get('timeframe') || '1d';
+    // === COLORFUL CHART RENDERER ===
+   // === VIBRANT "MOUNTAIN STYLE" CHART RENDERER ===
+    function drawColorfulChart(data) {
+        const canvas = document.getElementById('stockChart');
+        const ctx = canvas.getContext('2d');
         
-        document.getElementById('stockTitle').innerText = `Analysis for: ${ticker.toUpperCase()} (${timeframe})`;
-        const boxTitle = timeframe === '1m' ? 'Predicted Next Minute' : 
-                         timeframe === '1h' ? 'Predicted Next Hour' : 'Predicted Next Day';
-        document.getElementById('predictionTitle').innerText = boxTitle;
-
-        fetchModelData(ticker, timeframe);
-    }
-});
-
-async function fetchModelData(ticker, timeframe) {
-    try {
-        // Updated for Flask! We only need the relative path now.
-        const response = await fetch(`/predict_real_stock?ticker=${ticker}&timeframe=${timeframe}`);
-        const data = await response.json();
-
-        if (data.error) {
-            document.getElementById('loading').innerText = "Error: " + data.error;
-            document.getElementById('loading').style.color = "red";
-            return;
+        if (stockChart) {
+            stockChart.destroy(); // Clear old chart
         }
 
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('dashboard-content').style.display = 'block';
-
-        document.getElementById('rmse').innerText = data.rmse || "N/A";
-        document.getElementById('r2').innerText = data.r2 || "N/A";
-        document.getElementById('lastPrice').innerText = data.currency_symbol + data.current_price;
+        const chartAreaHeight = canvas.height || 400;
         
-        // Fixed ID from nextDay to nextPrice to match your HTML
-        const nextDayElement = document.getElementById('nextPrice');
-        const diff = data.predicted_price - data.current_price;
-        
-        nextDayElement.innerText = data.currency_symbol + data.predicted_price;
-        if (diff > 0) {
-            nextDayElement.style.color = "#16a34a"; 
-            nextDayElement.innerText += " ▲";
-        } else {
-            nextDayElement.style.color = "#dc2626"; 
-            nextDayElement.innerText += " ▼";
-        }
+        // ⛰️ 1. Mountain Fill Gradient (Teal to Transparent)
+        const mountainGradient = ctx.createLinearGradient(0, 0, 0, chartAreaHeight);
+        mountainGradient.addColorStop(0, 'rgba(0, 229, 192, 0.4)'); // Teal Transparent
+        mountainGradient.addColorStop(1, 'rgba(0, 229, 192, 0)');   // Fully Transparent
 
-        const graphLabels = data.labels;
-        const actualPrices = data.history;
-        const predictedPrices = [...data.history]; // Copy array
-        
-        // Setup prediction points for the chart
-        graphLabels.push("FUTURE"); 
-        actualPrices.push(null); 
-        predictedPrices.push(data.predicted_price); 
+        // 🤖 AI Prediction Line Gradient
+        const aiLineGradient = ctx.createLinearGradient(0, 0, canvas.width || 800, 0);
+        aiLineGradient.addColorStop(0, '#ff9f43'); // Orange
+        aiLineGradient.addColorStop(1, '#ff4757'); // Red
 
-        const ctx = document.getElementById('stockChart').getContext('2d');
-        const gradientBlue = ctx.createLinearGradient(0, 0, 0, 400);
-        gradientBlue.addColorStop(0, 'rgba(37, 99, 235, 0.5)'); 
-        gradientBlue.addColorStop(1, 'rgba(37, 99, 235, 0.0)'); 
+        // Last close price nikalna (Red line ke liye)
+        const lastActualPrice = data.history_close[data.history_close.length - 1];
 
-        if (myStockChart) myStockChart.destroy();
+        // 🔴 2. Custom Plugin: Red Dashed Current Price Line
+        const currentPriceLinePlugin = {
+            id: 'currentPriceLine',
+            beforeDraw: (chart) => {
+                const { ctx, chartArea: { left, right }, scales: { y } } = chart;
+                const yPos = y.getPixelForValue(lastActualPrice);
+                
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(left, yPos);
+                ctx.lineTo(right, yPos);
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = '#ff4757'; // Red color
+                ctx.setLineDash([4, 4]); // Dashed effect
+                ctx.stroke();
+                ctx.restore();
+            }
+        };
 
-        myStockChart = new Chart(ctx, {
+        stockChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: graphLabels,
+                labels: data.labels,
                 datasets: [
-                    { 
-                        label: 'Actual Price', 
-                        data: actualPrices, 
-                        borderColor: '#2563eb', 
-                        backgroundColor: gradientBlue, 
-                        borderWidth: 2.5,
-                        pointRadius: 0, 
-                        pointHoverRadius: 6, 
-                        tension: 0.4, 
-                        fill: true 
-                    },
-                    { 
-                        label: 'Predicted Price', 
-                        data: predictedPrices, 
-                        borderColor: '#dc2626', 
+                    {
+                        label: 'Actual Price (Mountain)',
+                        data: data.history_close,
+                        borderColor: '#00e5c0', // Bright Teal color (same as your image)
+                        backgroundColor: mountainGradient,
                         borderWidth: 2,
-                        borderDash: [5, 5], 
                         pointRadius: 0,
-                        pointHoverRadius: 6,
+                        tension: 0.1, // Slight curves for natural mountain look
+                        fill: true
+                    },
+                    {
+                        label: 'Moving Average (SMA 20)',
+                        data: data.sma_20,
+                        borderColor: 'rgba(255, 255, 255, 0.2)',
+                        borderWidth: 1.5,
+                        borderDash: [5, 5],
+                        pointRadius: 0,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'AI Trend Prediction',
+                        data: data.pred_line,
+                        borderColor: aiLineGradient,
+                        borderWidth: 3,
+                        pointRadius: 0,
                         tension: 0.4,
-                        fill: false 
+                        shadowColor: 'rgba(255, 71, 87, 0.5)',
+                        shadowBlur: 10
                     }
                 ]
             },
-            options: { 
-                responsive: true, 
+            options: {
+                responsive: true,
                 maintainAspectRatio: false,
                 interaction: { mode: 'index', intersect: false },
                 plugins: {
-                    legend: { position: 'top' },
-                    tooltip: {
-                        backgroundColor: 'rgba(15, 23, 42, 0.9)', 
-                        padding: 12, cornerRadius: 8
-                    }
+                    legend: { labels: { color: '#ffffff', font: { family: 'Poppins' }, usePointStyle: true } },
+                    tooltip: { backgroundColor: '#111827', titleColor: '#00e5c0', borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1 }
                 },
                 scales: {
-                    x: { grid: { display: false }, ticks: { maxTicksLimit: 8 } },
-                    y: {
-                        grid: { color: '#f1f5f9', drawBorder: false }, 
-                        ticks: { 
-                            callback: function(value) { return data.currency_symbol + value; }
-                        }
+                    x: { 
+                        ticks: { color: '#888', maxTicksLimit: 10 }, 
+                        grid: { display: false } // Vertical lines hata di (clean look ke liye)
+                    },
+                    y: { 
+                        position: 'right', // 3. Prices on the Right Side!
+                        ticks: { color: '#888' }, 
+                        grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false } 
                     }
                 }
-            }
+            },
+            plugins: [currentPriceLinePlugin] // Add the red line plugin
         });
-
-    } catch (error) {
-        document.getElementById('loading').innerText = "Failed to connect to backend.";
-        document.getElementById('loading').style.color = "red";
     }
-}
+
+    // === MAIN ANALYZE FUNCTION ===
+    window.analyzeStock = async function() {
+        let ticker = tickerInput.value.trim();
+        let timeframe = document.getElementById('timeframeSelect').value;
+        
+        let foundStock = popularStocks.find(s => s.name.toLowerCase() === ticker.toLowerCase());
+        if (foundStock) ticker = foundStock.symbol;
+
+        if (!ticker) { alert("Please enter a stock ticker!"); return; }
+
+        loadingDiv.style.display = 'block';
+
+        try {
+            const response = await fetch(`/predict_real_stock?ticker=${ticker}&timeframe=${timeframe}`);
+            const data = await response.json();
+
+            if (data.error) { alert("Error: " + data.error); loadingDiv.style.display = 'none'; return; }
+
+            // Update DOM Data
+            document.getElementById('rmse').innerText = data.rmse;
+            document.getElementById('r2').innerText = data.r2;
+            document.getElementById('lastPrice').innerText = data.currency_symbol + data.current_price;
+            document.getElementById('predictedPrice').innerText = data.currency_symbol + data.predicted_price;
+            document.getElementById('rsiValue').innerText = data.latest_rsi;
+            document.getElementById('stochValue').innerText = data.latest_stoch;
+            document.getElementById('vwapValue').innerText = data.currency_symbol + data.latest_vwap;
+
+            // Draw Graph
+            drawColorfulChart(data);
+
+        } catch (error) { 
+            console.error("Fetch error:", error); 
+            alert("Failed to connect to backend server."); 
+        }
+
+        loadingDiv.style.display = 'none';
+    }
+});
